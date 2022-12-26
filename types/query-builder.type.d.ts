@@ -1,6 +1,6 @@
-import { PrismaWhereInput } from "./prisma-query.interface";
+import { PrismaWhereInput } from "./prisma-query.type";
 
-export interface IModelEntity {
+export type IModelEntity = {
     filterableColumns: string[];
     selectableColumns: string[];
     filterableReltionship: string[];
@@ -19,7 +19,7 @@ export type FilteredPrismaKeys<PrismaClient> = FilterStartsWith<keyof PrismaClie
 
 export type TableNames<PrismaClient> = keyof Omit<PrismaClient, FilteredPrismaKeys<PrismaClient>>;
 
-export interface IBuilderObj {
+export type IBuilderObj = {
     take: number;
     skip: number;
     where: object;
@@ -27,7 +27,7 @@ export interface IBuilderObj {
     orderBy: object;
 }
 
-export interface QueryBuilder {
+export type QueryBuilder = {
     paginate: { take: number; skip: number };
     sort: object;
     select: object;
@@ -38,7 +38,7 @@ export interface QueryBuilder {
     };
 }
 
-export interface IPaginated {
+export type IPaginated = {
     totalPages: number;
     totalRecords?: number;
     perPage: number;
@@ -46,7 +46,7 @@ export interface IPaginated {
 }
 
 
-export interface IQueryOptionProps {
+export type IQueryOptionProps = {
     perPage?: number,
     currentPage?: number,
     value?: string,
@@ -61,7 +61,7 @@ export interface IQueryOptionProps {
     };
 }
 
-export interface IQueryFieldParams {
+export type IQueryFieldParams = {
     limit?: number;
     page?: number;
     sort?: string;
@@ -70,11 +70,11 @@ export interface IQueryFieldParams {
     filter?: string;
 }
 
-export interface IncludeInput {
+export type IncludeInput = {
     [x: string]: string[]
 }
 
-export interface AllQueryBuilderMethodArgs {
+export type AllQueryBuilderMethodArgs = {
     filter: PrismaWhereInput
     include: IncludeInput
     select: string[]
@@ -83,7 +83,7 @@ export interface AllQueryBuilderMethodArgs {
 }
 
 /* An interface that is used to define the properties of the class. */
-export interface IQueryFields {
+export type IQueryFields = {
     limit?: number;
     page?: number;
     sort?: string;

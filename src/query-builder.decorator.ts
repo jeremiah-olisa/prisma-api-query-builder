@@ -2,17 +2,6 @@
 // import { Transform } from 'class-transformer';
 // import { IsInt, IsOptional, IsPositive, IsString } from 'class-validator';
 
-import { IQueryFieldParams, WithRequiredProperty } from "./query-builder.interface";
-
-export const defaultQueryFields: WithRequiredProperty<IQueryFieldParams, 'limit' | 'page' | 'sort' | 'select' | 'include' | 'filter'> = {
-  limit: 15,
-  page: 1,
-  sort: 'createdAt',
-  select: '',
-  include: '',
-  filter: '',
-};
-
 
 // export class QueryFields implements IQueryFields {
 //   @IsInt()
@@ -62,3 +51,5 @@ export const defaultQueryFields: WithRequiredProperty<IQueryFieldParams, 'limit'
 // }
 
 // export const SwaggerApiQueryBuilder = () => ApiQuery({ type: QueryFields });
+
+export default {}

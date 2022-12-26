@@ -1,8 +1,8 @@
 import * as qs from 'qs'
-import { AllQueryBuilderMethodArgs, IQueryFieldParams } from "./query-builder.interface";
+import { AllQueryBuilderMethodArgs, IQueryFieldParams } from "./../types";
 import { defaultOptions } from './query-builder.constant';
 
-class QueryBuilder {
+class QueryStringBuilder {
     private queryFields: IQueryFieldParams = {
         limit: defaultOptions.perPage,
         page: defaultOptions.currentPage,
@@ -57,4 +57,4 @@ class QueryBuilder {
         return qs.stringify(this.queryFields)
     }
 }
-export default QueryBuilder
+export default QueryStringBuilder

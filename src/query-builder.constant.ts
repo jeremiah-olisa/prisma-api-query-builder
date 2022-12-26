@@ -1,5 +1,14 @@
-import { PrismaValidStringFilter } from "./prisma-query.interface";
-import { IQueryOptionProps, WithRequiredProperty } from "./query-builder.interface";
+import type { PrismaValidStringFilter, IQueryOptionProps, IQueryFieldParams, WithRequiredProperty  } from "../types";
+
+export const defaultQueryFields: WithRequiredProperty<IQueryFieldParams, 'limit' | 'page' | 'sort' | 'select' | 'include' | 'filter'> = {
+    limit: 15,
+    page: 1,
+    sort: 'createdAt',
+    select: '',
+    include: '',
+    filter: '',
+};
+
 
 
 export const defaultOptions: WithRequiredProperty<IQueryOptionProps, 'currentPage' | 'perPage'> = {

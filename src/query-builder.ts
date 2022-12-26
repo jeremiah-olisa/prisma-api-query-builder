@@ -1,14 +1,12 @@
 import * as _ from 'lodash';
 import * as qs from 'qs'
-import { defaultQueryFields } from './query-builder.decorator';
 import { parseObject } from './query-string-parser';
-import { IAnyObject, IBuilderObj, IModelEntity, IPaginated, IQueryFields, QueryBuilder } from './query-builder.interface';
-import { PrismaValidStringFilter, PrismaWhereInput } from './prisma-query.interface';
-import { defaultOptions, defaultPrismaStringFilter, isObjectEmpty, skip, take } from './query-builder.constant';
+import { defaultOptions, defaultPrismaStringFilter, isObjectEmpty, skip, defaultQueryFields, take } from './query-builder.constant';
+import type { IAnyObject, IBuilderObj, IModelEntity, IPaginated, IQueryFields, QueryBuilder, PrismaValidStringFilter, PrismaWhereInput } from './../types';
 
 
 
-export class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends IModelEntity = IModelEntity, PrismaModelDelegate extends any = any> {
+class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends IModelEntity = IModelEntity, PrismaModelDelegate extends any = any> {
   protected query: IQueryFields;
   protected modelEntity: PrismaModelDelegate;
   protected entity: IModelEntity;
@@ -130,8 +128,8 @@ export class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends
       );
       // const hasKey = this.builder?.select?.hasOwnProperty(col);
 
-      // if (hasKey)
-      this.builder.select ??= {};
+      if (!this.builder.select)
+        this.builder.select = {};
 
       this.builder.select = {
         [col]: {
@@ -375,3 +373,6 @@ export class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends
     return validFilterObj;
   }
 }
+
+
+export default ApiQueryBuilder;
