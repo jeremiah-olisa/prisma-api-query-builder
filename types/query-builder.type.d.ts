@@ -1,14 +1,15 @@
 import type { PrismaWhereInput } from "./prisma-query.type";
 
-export type IModelEntity = {
-    filterableColumns: string[];
-    selectableColumns: string[];
-    filterableReltionship: string[];
+
+export type IModelEntityIModelEntity<BaseEntity, Columns, RelationShips> = {
+    filterableColumns: Columns[];
+    selectableColumns: Columns[];
+    filterableReltionship: RelationShips[];
     filterableReltionshipColumns: string[];
-    sortableColumns: string[];
-    allowedRelationShips: string[];
-    selectableRelationShips: { [x: string]: string[] };
-}
+    sortableColumns: Columns[];
+    allowedRelationShips: RelationShips[];
+    selectableRelationShips: { [x in RelationShips]: string[] };
+} & BaseEntity
 
 type FilterStartsWith<
     Set,

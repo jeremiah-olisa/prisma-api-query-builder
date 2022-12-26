@@ -1,7 +1,12 @@
 
 export type Enumerable<T> = T | Array<T>;
 
-type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
+export type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
+
+export type TableColumns<Table> = keyof Table;
+
+export type TableRelationShips<Create, Model> = keyof Omit<Create, keyof Model>;
+
 
 /**
  * XOR is needed to have a real mutually exclusive union type
