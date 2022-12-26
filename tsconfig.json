@@ -1,20 +1,23 @@
 {
-  "include": ["src", "types", "test/prisma-query.type.ts"],
   "compilerOptions": {
-    "module": "ES2015",
-    "importHelpers": true,
+    "module": "ESNext",
     "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
     "sourceMap": true,
-    "rootDir": "./src",
-    "strict": false,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "moduleResolution": "node",
-    "esModuleInterop": true,
+    "outDir": "./dist",
+    "baseUrl": "./src",
+    "moduleResolution": "Node",
+    "incremental": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-  }
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false
+  },
+  "exclude": ["node_modules", "test", "dist", "**/*spec.ts", "types"]
 }

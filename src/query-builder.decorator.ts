@@ -1,8 +1,6 @@
 // import { ApiPropertyOptional, ApiQuery } from '@nestjs/swagger';
 // import { Transform } from 'class-transformer';
 // import { IsInt, IsOptional, IsPositive, IsString } from 'class-validator';
-
-
 // export class QueryFields implements IQueryFields {
 //   @IsInt()
 //   @IsOptional()
@@ -52,4 +50,4 @@
 
 // export const SwaggerApiQueryBuilder = () => ApiQuery({ type: QueryFields });
 
-export default {}
+export default {};

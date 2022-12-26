@@ -1,8 +1,8 @@
-import * as _ from 'lodash';
-import * as qs from 'qs'
+import _ from 'lodash';
+import qs from 'qs';
 import { parseObject } from './query-string-parser';
 import { defaultOptions, defaultPrismaStringFilter, isObjectEmpty, skip, defaultQueryFields, take } from './query-builder.constant';
-import type { IAnyObject, IBuilderObj, IModelEntity, IPaginated, IQueryFields, QueryBuilder, PrismaValidStringFilter, PrismaWhereInput } from './../types';
+import type { IAnyObject, IBuilderObj, IModelEntity, IPaginated, IQueryFields, QueryBuilder, PrismaValidStringFilter, PrismaWhereInput } from '../types';
 
 
 

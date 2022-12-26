@@ -1,6 +1,7 @@
-import * as qs from 'qs'
-import { AllQueryBuilderMethodArgs, IQueryFieldParams } from "./../types";
+import qs from 'qs';
 import { defaultOptions } from './query-builder.constant';
+import type { AllQueryBuilderMethodArgs, IQueryFieldParams } from "../types";
+
 
 class QueryStringBuilder {
     private queryFields: IQueryFieldParams = {
@@ -11,8 +12,6 @@ class QueryStringBuilder {
         include: '',
         filter: '',
     };
-
-    constructor() { }
 
     filter(filter: AllQueryBuilderMethodArgs['filter']) {
         this.queryFields.filter = qs.stringify(filter)

@@ -1,4 +1,4 @@
-import { PrismaWhereInput } from "./prisma-query.type";
+import type { PrismaWhereInput } from "./prisma-query.type";
 
 export type IModelEntity = {
     filterableColumns: string[];
