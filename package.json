@@ -5,6 +5,7 @@
   "typings": "dist/index.d.ts",
   "files": [
     "dist",
+    "types",
     "src"
   ],
   "engines": {
@@ -16,7 +17,7 @@
     "build": "tsc",
     "test": "tsdx test",
     "lint": "tsdx lint",
-    "prepare": "tsdx build",
+    "prepare": "yarn build",
     "size": "size-limit",
     "analyze": "size-limit --why"
   },
@@ -38,16 +39,34 @@
   "author": "Jeremiah Olisa <jeremiaholisa453@gmail.com>",
   "size-limit": [
     {
-      "path": "dist/prisma-api-query-builder.cjs.production.min.js",
-      "limit": "10 KB"
+      "path": "dist/api-query-string-builder-index.js",
+      "limit": "12 KB"
     },
     {
-      "path": "dist/prisma-api-query-builder.esm.js",
-      "limit": "10 KB"
+      "path": "dist/index.js",
+      "limit": "40 KB"
+    },
+    {
+      "path": "dist/query-builder.constant.js",
+      "limit": "2 KB"
+    },
+    {
+      "path": "dist/query-builder.decorator.js",
+      "limit": "2 KB"
+    },
+    {
+      "path": "dist/query-string-parser.js",
+      "limit": "2 KB"
+    },
+    {
+      "path": "dist/query-builder.js",
+      "limit": "40 KB"
     }
   ],
   "devDependencies": {
     "@size-limit/preset-small-lib": "^8.1.0",
+    "@size-limit/webpack": "^8.1.0",
+    "@size-limit/webpack-why": "^8.1.0",
     "@types/lodash": "^4.14.191",
     "@types/qs": "^6.9.7",
     "husky": "^8.0.2",
