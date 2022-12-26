@@ -1,7 +1,7 @@
 import type { PrismaWhereInput } from "./prisma-query.type";
 
 
-export type IModelEntityIModelEntity<BaseEntity, Columns, RelationShips> = {
+export type IModelEntity<BaseEntity, Columns, RelationShips> = {
     filterableColumns: Columns[];
     selectableColumns: Columns[];
     filterableReltionship: RelationShips[];
