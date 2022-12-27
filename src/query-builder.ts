@@ -27,20 +27,20 @@ class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends IModel
     orderBy: {}
   };
 
-  constructor(modelEntity: PrismaModelDelegate, entity: TModelEntity, validStringFilter: PrismaValidStringFilter[] = defaultPrismaStringFilter, query?: IQueryFields) {
+  constructor(modelEntity: PrismaModelDelegate, entity: TModelEntity, query?: IQueryFields, validStringFilter: PrismaValidStringFilter[] = defaultPrismaStringFilter) {
     this.modelEntity = modelEntity;
     this.query = query ?? defaultQueryFields;
     this.entity = entity;
     this.validStringFilter = validStringFilter;
-    // console.log({ querySelect: query.select, defaultQueryFieldsSelect: defaultQueryFields.select, builder: this.builder })
+    console.log("CONSTRUCTOR", { querySelect: query.select, defaultQueryFieldsSelect: defaultQueryFields.select, builder: this.builder })
   }
 
   filter() {
     const filterObj: object = parseObject(qs.parse(this?.query?.filter ?? '', { comma: true }));
 
-    console.log({ filterObj })
     const validFilterObj = this.filterRecursive(filterObj);
-    // console.log({ filterObj, validFilterObj })
+    console.log("FILTER", { filterObj, queryFilter: this?.query?.filter, validFilterObj })
+
     this.builder.filter = validFilterObj;
     return this;
   }
@@ -53,12 +53,18 @@ class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends IModel
         ...this.entity.sortableColumns.map((col) => `-${col}`),
       ],
     );
-    // console.log(sort)
     this.builder.sort = sort?.map((s: string) => {
       const key = s?.startsWith('-') ? s?.slice(1, s?.length) : s;
       return { [key]: s?.startsWith('-') ? 'desc' : 'asc' };
     });
 
+    console.log("SORT", {
+      sort,
+      'defaultQueryFields.sort': defaultQueryFields.sort,
+      'this?.query?.sort': this?.query?.sort,
+      'this.entity.sortableColumns': this.entity.sortableColumns,
+      'this.builder.sort': this.builder.sort,
+    })
     return this;
   }
 
@@ -76,11 +82,13 @@ class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends IModel
       this.entity.selectableColumns,
       this.toArray(selectObj?.query),
     );
-    // console.log(this.builder.select)
-    // console.log({
-    //   selectableColumns: this.entity.selectableColumns,
-    //   selectObjQuery: this.toArray(selectObj?.query),
-    // })
+
+    console.log("SELECT", {
+      builderSelect: this.builder.select,
+      selectableColumns: this.entity.selectableColumns,
+      selectObjQuery: this.toArray(selectObj?.query),
+    })
+
     return this;
   }
 
@@ -127,7 +135,6 @@ class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends IModel
         includeQueryParam,
       );
       // const hasKey = this.builder?.select?.hasOwnProperty(col);
-
       if (!this.builder.select)
         this.builder.select = {};
 
@@ -137,7 +144,16 @@ class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends IModel
             ? this.arrayToBoolObject(selectables, selectables)
             : filteredIncludeObj ?? undefined,
       }
+      console.log("POPULATE LOOP", {
+        selectables,
+        includeQueryParam,
+        filteredIncludeObj,
+        ['builderSelect' + col]: this.builder.select[col],
+      })
     });
+    console.log("POPULATE", {
+      includeObj,
+    })
     return this;
   }
 
@@ -153,6 +169,8 @@ class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends IModel
     const limit = (this.query?.limit ?? defaultOptions.perPage) * 1 || 50;
     const skip = (page - 1) * limit;
     this.builder.paginate = { skip, take: limit };
+
+    console.log({ page, limit, skip, 'this.builder.paginate': this.builder.paginate })
 
     return this;
   }
