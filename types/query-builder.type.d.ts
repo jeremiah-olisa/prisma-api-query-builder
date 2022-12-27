@@ -38,9 +38,9 @@ export type TableNames<PrismaClient> = keyof Omit<PrismaClient, FilteredPrismaKe
  * property is a number, object, or undefined.
  * @property {number} take - number of records to return
  * @property {number} skip - number of records to skip
- * @property {object} where - {
- * @property {object} select - {
- * @property {object} orderBy - {
+ * @property {object} where
+ * @property {object} select
+ * @property {object} orderBy
  */
 export type IBuilderObj = {
     take: number;
