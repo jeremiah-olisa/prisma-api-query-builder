@@ -16,14 +16,12 @@ class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends IModel
     filter: {},
     paginated: { currentPage: 1, pages: 1 },
     select: {},
-    include: {},
     sort: {},
     paginate: { skip, take }
   };
   protected builderObj: IBuilderObj = {
     skip,
     take,
-    include: {},
     where: {},
     select: {},
     orderBy: {}
@@ -133,14 +131,12 @@ class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends IModel
       if (!this.builder.select)
         this.builder.select = {};
 
-      this.builder.include = {
-        [col]: {
-          select:
-            includeQueryParam[0] == 'true'
-              ? this.arrayToBoolObject(selectables, selectables)
-              : filteredIncludeObj ?? undefined,
-        }
-      };
+      this.builder.select[col] = {
+        select:
+          includeQueryParam[0] == 'true'
+            ? this.arrayToBoolObject(selectables, selectables)
+            : filteredIncludeObj ?? undefined,
+      }
     });
     return this;
   }
@@ -167,16 +163,15 @@ class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends IModel
    * @returns The builder object
    */
   build() {
-    const { filter, paginate, select, include, sort } = this.builder;
+    const { filter, paginate, select, sort } = this.builder;
     this.builderObj = {
       where: filter,
       select,
-      include,
       orderBy: sort,
       ...paginate,
     };
 
-    console.log({ builderObj: this.builderObj })
+    // console.log({ builderObj: this.builderObj })
     return this;
   }
 
