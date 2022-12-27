@@ -137,13 +137,12 @@ class ApiQueryBuilder<TModelEntity extends IModelEntity = IModelEntity, WhereInp
       // const hasKey = this.builder?.select?.hasOwnProperty(col);
       if (!this.builder.select)
         this.builder.select = {};
+        
+      const select = includeQueryParam[0] == 'true'
+        ? this.arrayToBoolObject(selectables, selectables)
+        : filteredIncludeObj ?? undefined
+      this.builder.select[col] = { select, }
 
-      this.builder.select[col] = {
-        select:
-          includeQueryParam[0] == 'true'
-            ? this.arrayToBoolObject(selectables, selectables)
-            : filteredIncludeObj ?? undefined,
-      }
       console.log("\n \nPOPULATE LOOP", {
         selectables,
         includeQueryParam,
