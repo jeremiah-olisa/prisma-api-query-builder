@@ -6,7 +6,7 @@ import type { IAnyObject, IBuilderObj, IModelEntity, IPaginated, IQueryFields, Q
 
 
 
-class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends IModelEntity = IModelEntity, PrismaModelDelegate extends any = any> {
+class ApiQueryBuilder<TModelEntity extends IModelEntity = IModelEntity, WhereInput = PrismaWhereInput, PrismaModelDelegate extends any = any> {
   protected query: IQueryFields;
   protected modelEntity: PrismaModelDelegate;
   protected entity: IModelEntity;
@@ -32,14 +32,14 @@ class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends IModel
     this.query = query ?? defaultQueryFields;
     this.entity = entity;
     this.validStringFilter = validStringFilter;
-    console.log("CONSTRUCTOR", { querySelect: query.select, defaultQueryFieldsSelect: defaultQueryFields.select, builder: this.builder })
+    console.log("\n \nCONSTRUCTOR", { querySelect: query.select, defaultQueryFieldsSelect: defaultQueryFields.select, builder: this.builder })
   }
 
   filter() {
     const filterObj: object = parseObject(qs.parse(this?.query?.filter ?? '', { comma: true }));
 
     const validFilterObj = this.filterRecursive(filterObj);
-    console.log("FILTER", { filterObj, queryFilter: this?.query?.filter, validFilterObj })
+    console.log("\n \n FILTER", { filterObj, queryFilter: this?.query?.filter, validFilterObj })
 
     this.builder.filter = validFilterObj;
     return this;
@@ -58,7 +58,7 @@ class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends IModel
       return { [key]: s?.startsWith('-') ? 'desc' : 'asc' };
     });
 
-    console.log("SORT", {
+    console.log("\n \nSORT", {
       sort,
       'defaultQueryFields.sort': defaultQueryFields.sort,
       'this?.query?.sort': this?.query?.sort,
@@ -83,7 +83,7 @@ class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends IModel
       this.toArray(selectObj?.query),
     );
 
-    console.log("SELECT", {
+    console.log("\n \nSELECT", {
       builderSelect: this.builder.select,
       selectableColumns: this.entity.selectableColumns,
       selectObjQuery: this.toArray(selectObj?.query),
@@ -144,14 +144,14 @@ class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends IModel
             ? this.arrayToBoolObject(selectables, selectables)
             : filteredIncludeObj ?? undefined,
       }
-      console.log("POPULATE LOOP", {
+      console.log("\n \nPOPULATE LOOP", {
         selectables,
         includeQueryParam,
         filteredIncludeObj,
         ['builderSelect' + col]: this.builder.select[col],
       })
     });
-    console.log("POPULATE", {
+    console.log("\n \nPOPULATE", {
       includeObj,
     })
     return this;
@@ -170,7 +170,7 @@ class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends IModel
     const skip = (page - 1) * limit;
     this.builder.paginate = { skip, take: limit };
 
-    console.log({ page, limit, skip, 'this.builder.paginate': this.builder.paginate })
+    console.log("\n \n PAGINATE", { page, limit, skip, 'this.builder.paginate': this.builder.paginate })
 
     return this;
   }
@@ -189,7 +189,7 @@ class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends IModel
       ...paginate,
     };
 
-    console.log("Builder Object", { ...this.builderObj })
+    console.log("\n \nBuilder Object", { ...this.builderObj })
     return this;
   }
 
@@ -332,7 +332,7 @@ class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends IModel
       obj[element] = true;
     });
 
-    // console.log("obj: ", obj)
+    // console.log("\n \nobj: ", obj)
     return isObjectEmpty(obj) ? {} : obj;
   }
 
