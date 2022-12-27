@@ -25,6 +25,7 @@ export type IBuilderObj = {
     skip: number;
     where: object;
     select: object;
+    include: object;
     orderBy: object;
 }
 
@@ -33,6 +34,7 @@ export type QueryBuilder = {
     sort: object;
     select: object;
     filter: object;
+    include: object;
     paginated: {
         pages: number;
         currentPage: number;
