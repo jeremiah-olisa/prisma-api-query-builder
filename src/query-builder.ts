@@ -171,7 +171,7 @@ class ApiQueryBuilder<WhereInput = PrismaWhereInput, TModelEntity extends IModel
       ...paginate,
     };
 
-    // console.log({ builderObj: this.builderObj })
+    console.log({ builderObj: this.builderObj })
     return this;
   }
 
