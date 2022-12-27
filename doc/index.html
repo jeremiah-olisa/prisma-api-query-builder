@@ -1,0 +1,208 @@
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>prisma-api-query-builder</title><meta name="description" content="Documentation for prisma-api-query-builder"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container">
+<div class="table-cell" id="tsd-search" data-base=".">
+<div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M15.7824 13.833L12.6666 10.7177C12.5259 10.5771 12.3353 10.499 12.1353 10.499H11.6259C12.4884 9.39596 13.001 8.00859 13.001 6.49937C13.001 2.90909 10.0914 0 6.50048 0C2.90959 0 0 2.90909 0 6.49937C0 10.0896 2.90959 12.9987 6.50048 12.9987C8.00996 12.9987 9.39756 12.4863 10.5008 11.6239V12.1332C10.5008 12.3332 10.5789 12.5238 10.7195 12.6644L13.8354 15.7797C14.1292 16.0734 14.6042 16.0734 14.8948 15.7797L15.7793 14.8954C16.0731 14.6017 16.0731 14.1267 15.7824 13.833ZM6.50048 10.499C4.29094 10.499 2.50018 8.71165 2.50018 6.49937C2.50018 4.29021 4.28781 2.49976 6.50048 2.49976C8.71001 2.49976 10.5008 4.28708 10.5008 6.49937C10.5008 8.70852 8.71314 10.499 6.50048 10.499Z" fill="var(--color-text)"></path></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
+<div class="field">
+<div id="tsd-toolbar-links"></div></div>
+<ul class="results">
+<li class="state loading">Preparing search index...</li>
+<li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">prisma-api-query-builder</a></div>
+<div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="7" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="11" width="14" height="2" fill="var(--color-text)"></rect></svg></a></div></div></header>
+<div class="container container-main">
+<div class="col-8 col-content">
+<div class="tsd-page-title">
+<h2>prisma-api-query-builder</h2></div>
+<div class="tsd-panel tsd-typography"><p><a href="https://github.com/jeremiah-olisa/shopping-list">View Implementation</a></p>
+
+<a href="#httpsgithubcomjeremiah-olisashopping-list" id="httpsgithubcomjeremiah-olisashopping-list" style="color: inherit; text-decoration: none;">
+  <h2><a href="https://github.com/jeremiah-olisa/shopping-list">https://github.com/jeremiah-olisa/shopping-list</a></h2>
+</a>
+<p><a name="ApiQueryBuilder"></a></p>
+
+<a href="#apiquerybuilder" id="apiquerybuilder" style="color: inherit; text-decoration: none;">
+  <h2>ApiQueryBuilder</h2>
+</a>
+<p><strong>Kind</strong>: global class</p>
+<ul>
+<li><a href="#ApiQueryBuilder">ApiQueryBuilder</a><ul>
+<li><a href="#new_ApiQueryBuilder_new">new ApiQueryBuilder(modelEntity, entity, [query], validStringFilter)</a></li>
+<li><a href="#ApiQueryBuilder+filter">.filter()</a> ⇒</li>
+<li><a href="#ApiQueryBuilder+sort">.sort()</a> ⇒</li>
+<li><a href="#ApiQueryBuilder+select">.select()</a> ⇒</li>
+<li><a href="#ApiQueryBuilder+populate">.populate()</a> ⇒</li>
+<li><a href="#ApiQueryBuilder+paginate">.paginate()</a> ⇒</li>
+<li><a href="#ApiQueryBuilder+build">.build()</a> ⇒</li>
+<li><a href="#ApiQueryBuilder+all">.all()</a> ⇒</li>
+<li><a href="#ApiQueryBuilder+many">.many()</a> ⇒</li>
+<li><a href="#ApiQueryBuilder+findMany">.findMany(filter)</a> ⇒</li>
+<li><a href="#ApiQueryBuilder+one">.one(filter)</a> ⇒</li>
+<li><a href="#ApiQueryBuilder+toArray">.toArray(val)</a> ⇒</li>
+<li><a href="#ApiQueryBuilder+arrayToBoolObject">.arrayToBoolObject(selectables, array)</a> ⇒</li>
+<li><a href="#ApiQueryBuilder+filterRecursive">.filterRecursive(filterObj)</a></li>
+</ul>
+</li>
+</ul>
+<p><a name="new_ApiQueryBuilder_new"></a></p>
+
+<a href="#new-apiquerybuildermodelentity-entity-query-validstringfilter" id="new-apiquerybuildermodelentity-entity-query-validstringfilter" style="color: inherit; text-decoration: none;">
+  <h3>new ApiQueryBuilder(modelEntity, entity, [query], validStringFilter)</h3>
+</a>
+<p>The constructor takes in a modelEntity, entity, query, and validStringFilter</p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>modelEntity</td>
+<td><code>PrismaModelDelegate</code></td>
+<td>This is the prisma entity e.g this.prisma.shoppingItem</td>
+</tr>
+<tr>
+<td>entity</td>
+<td><code>TModelEntity</code></td>
+<td>This is the entity that you want to query. it also contains all the settings for filtering and selecting of data</td>
+</tr>
+<tr>
+<td>[query]</td>
+<td><code>IQueryFields</code></td>
+<td>This is the query string fields from the api.</td>
+</tr>
+<tr>
+<td>validStringFilter</td>
+<td><code>Array.&lt;PrismaValidStringFilter&gt;</code></td>
+<td>This is an array of PrismaValidStringFilter. This is used to validate the string filter.</td>
+</tr>
+</tbody></table>
+<p><a name="ApiQueryBuilder+filter"></a></p>
+
+<a href="#apiquerybuilderfilter-⇒" id="apiquerybuilderfilter-⇒" style="color: inherit; text-decoration: none;">
+  <h3>apiQueryBuilder.filter() ⇒</h3>
+</a>
+<p>keysakes a query string, parses it into an object, and then recursively filters out any invalid</p>
+<p><strong>Kind</strong>: instance method of <a href="#ApiQueryBuilder"><code>ApiQueryBuilder</code></a>
+<strong>Returns</strong>: The builder object with the filter property set to the validFilterObj.
+<a name="ApiQueryBuilder+sort"></a></p>
+
+<a href="#apiquerybuildersort-⇒" id="apiquerybuildersort-⇒" style="color: inherit; text-decoration: none;">
+  <h3>apiQueryBuilder.sort() ⇒</h3>
+</a>
+<p>the sortable columnsery parameter, splits it into an array, and then filters it to only include</p>
+<p><strong>Kind</strong>: instance method of <a href="#ApiQueryBuilder"><code>ApiQueryBuilder</code></a>
+<strong>Returns</strong>: The builder object
+<a name="ApiQueryBuilder+select"></a></p>
+
+<a href="#apiquerybuilderselect-⇒" id="apiquerybuilderselect-⇒" style="color: inherit; text-decoration: none;">
+  <h3>apiQueryBuilder.select() ⇒</h3>
+</a>
+<p>whether the column was selected or notmn names and the values being <code>true</code> or <code>false</code> depending on</p>
+<p><strong>Kind</strong>: instance method of <a href="#ApiQueryBuilder"><code>ApiQueryBuilder</code></a>
+<strong>Returns</strong>: The builder object
+<a name="ApiQueryBuilder+populate"></a></p>
+
+<a href="#apiquerybuilderpopulate-⇒" id="apiquerybuilderpopulate-⇒" style="color: inherit; text-decoration: none;">
+  <h3>apiQueryBuilder.populate() ⇒</h3>
+</a>
+<p>property to the knex query builderparameter called <code>include</code> then we will add the <code>select</code></p>
+<p><strong>Kind</strong>: instance method of <a href="#ApiQueryBuilder"><code>ApiQueryBuilder</code></a>
+<strong>Returns</strong>: The builder object with the select property set to the selectables object.
+<a name="ApiQueryBuilder+paginate"></a></p>
+
+<a href="#apiquerybuilderpaginate-⇒" id="apiquerybuilderpaginate-⇒" style="color: inherit; text-decoration: none;">
+  <h3>apiQueryBuilder.paginate() ⇒</h3>
+</a>
+<p>take values for the paginationom the query string, and then uses them to calculate the skip and</p>
+<p><strong>Kind</strong>: instance method of <a href="#ApiQueryBuilder"><code>ApiQueryBuilder</code></a>
+properties. The builder object with the paginate property set to an object with skip and take
+<a name="ApiQueryBuilder+build"></a></p>
+
+<a href="#apiquerybuilderbuild-⇒" id="apiquerybuilderbuild-⇒" style="color: inherit; text-decoration: none;">
+  <h3>apiQueryBuilder.build() ⇒</h3>
+</a>
+<p>them to the builderObj propertyselect, and sort properties from the builder object and assigns</p>
+<p><strong>Kind</strong>: instance method of <a href="#ApiQueryBuilder"><code>ApiQueryBuilder</code></a>
+<strong>Returns</strong>: The builder object
+<a name="ApiQueryBuilder+all"></a></p>
+
+<a href="#apiquerybuilderall-⇒" id="apiquerybuilderall-⇒" style="color: inherit; text-decoration: none;">
+  <h3>apiQueryBuilder.all() ⇒</h3>
+</a>
+<p>query.unction sorts, filters, selects, populates, and paginates the query, and then returns the</p>
+<p><strong>Kind</strong>: instance method of <a href="#ApiQueryBuilder"><code>ApiQueryBuilder</code></a>
+<strong>Returns</strong>: The query object.
+<a name="ApiQueryBuilder+many"></a></p>
+
+<a href="#apiquerybuildermany-⇒" id="apiquerybuildermany-⇒" style="color: inherit; text-decoration: none;">
+  <h3>apiQueryBuilder.many() ⇒</h3>
+</a>
+<p>It returns a paginated object with the data and the paginated object</p>
+<p><strong>Kind</strong>: instance method of <a href="#ApiQueryBuilder"><code>ApiQueryBuilder</code></a>
+<strong>Returns</strong>: An object with two properties: data and paginated.
+<a name="ApiQueryBuilder+findMany"></a></p>
+
+<a href="#apiquerybuilderfindmanyfilter-⇒" id="apiquerybuilderfindmanyfilter-⇒" style="color: inherit; text-decoration: none;">
+  <h3>apiQueryBuilder.findMany(filter) ⇒</h3>
+</a>
+<p>and returns the data and paginated objectatch the filter, calculates the total number of pages,ct,</p>
+<p>| --- | --- | --- |
+| selectables | <code>Array.&lt;string&gt;</code> | string[] - an array of strings that are the selectable options |
+| array | <code>Array.&lt;string&gt;</code> | string[] - the array of strings to convert to a boolean object |</p>
+<p><a name="ApiQueryBuilder+filterRecursive"></a></p>
+
+<a href="#apiquerybuilderfilterrecursivefilterobj" id="apiquerybuilderfilterrecursivefilterobj" style="color: inherit; text-decoration: none;">
+  <h3>apiQueryBuilder.filterRecursive(filterObj)</h3>
+</a>
+<p>it&#39;s empty filter object, picks only the valid keys, and then recursively filters the object until</p>
+<p><strong>Kind</strong>: instance method of <a href="#ApiQueryBuilder"><code>ApiQueryBuilder</code></a></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>filterObj</td>
+<td><code>object</code></td>
+<td>object - The object that you want to filter.</td>
+</tr>
+</tbody></table>
+<p><a href="https://github.com/jeremiah-olisa/shopping-list">View Implementation</a></p>
+</div></div>
+<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+<div class="tsd-navigation settings">
+<details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility">
+<h4 class="uppercase">Member Visibility</h4><form>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-private" name="private"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Private</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div>
+<div class="tsd-theme-toggle">
+<h4 class="uppercase">Theme</h4><select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<nav class="tsd-navigation primary">
+<details class="tsd-index-accordion" open><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Modules</h3></summary>
+<div class="tsd-accordion-details">
+<ul>
+<li class="current selected"><a href="modules.html">prisma-<wbr/>api-<wbr/>query-<wbr/>builder</a>
+<ul>
+<li class="tsd-kind-module"><a href="modules/src.html">src</a></li>
+<li class="tsd-kind-module"><a href="modules/src_api_query_string_builder_index.html">src/api-<wbr/>query-<wbr/>string-<wbr/>builder-<wbr/>index</a></li>
+<li class="tsd-kind-module"><a href="modules/src_query_builder.html">src/query-<wbr/>builder</a></li>
+<li class="tsd-kind-module"><a href="modules/src_query_builder_constant.html">src/query-<wbr/>builder.constant</a></li>
+<li class="tsd-kind-module"><a href="modules/src_query_builder_decorator.html">src/query-<wbr/>builder.decorator</a></li>
+<li class="tsd-kind-module"><a href="modules/src_query_string_parser.html">src/query-<wbr/>string-<wbr/>parser</a></li>
+<li class="tsd-kind-module"><a href="modules/types.html">types</a></li>
+<li class="tsd-kind-module"><a href="modules/types_prisma_query_type.html">types/prisma-<wbr/>query.type</a></li>
+<li class="tsd-kind-module"><a href="modules/types_query_builder_type.html">types/query-<wbr/>builder.type</a></li></ul></li></ul></div></details></nav></div></div>
+<div class="container tsd-generator">
+<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
+<div class="overlay"></div><script src="assets/main.js"></script></body></html>
