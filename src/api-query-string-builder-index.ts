@@ -1,4 +1,4 @@
-import qs from 'qs';
+import * as qs from 'qs';
 import { defaultOptions } from './query-builder.constant';
 import type { AllQueryBuilderMethodArgs, IQueryFieldParams } from "../types";
 
