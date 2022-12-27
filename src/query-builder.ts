@@ -4,14 +4,16 @@ import { parseObject } from './query-string-parser';
 import { defaultOptions, defaultPrismaStringFilter, isObjectEmpty, skip, defaultQueryFields, take } from './query-builder.constant';
 import type { IAnyObject, IBuilderObj, IModelEntity, IPaginated, IQueryFields, QueryBuilder, PrismaValidStringFilter, PrismaWhereInput } from '../types';
 
-
-
+/* It takes a model entity, a query object and a valid string filter array and returns a valid Prisma
+query object */
 class ApiQueryBuilder<TModelEntity extends IModelEntity = IModelEntity, WhereInput = PrismaWhereInput, PrismaModelDelegate extends any = any> {
+  /* Defining the class properties. */
   protected query: IQueryFields;
   protected modelEntity: PrismaModelDelegate;
   protected entity: IModelEntity;
   protected validStringFilter: PrismaValidStringFilter[];
-  // TODO: change from prismaclient to prismaservice
+
+  /* Defining the default values for the query builder. */
   protected builder: QueryBuilder = {
     filter: {},
     paginated: { currentPage: 1, pages: 1 },
@@ -19,6 +21,7 @@ class ApiQueryBuilder<TModelEntity extends IModelEntity = IModelEntity, WhereInp
     sort: {},
     paginate: { skip, take }
   };
+  /* Defining the default values for the query builder object. */
   protected builderObj: IBuilderObj = {
     skip,
     take,
@@ -27,24 +30,38 @@ class ApiQueryBuilder<TModelEntity extends IModelEntity = IModelEntity, WhereInp
     orderBy: {}
   };
 
+  /**
+   * The constructor takes in a modelEntity, entity, query, and validStringFilter
+   * @param {PrismaModelDelegate} modelEntity - This is the prisma entity e.g this.prisma.shoppingItem
+   * @param {TModelEntity} entity - This is the entity that you want to query. it also contains all the settings for filtering and selecting of data
+   * @param {IQueryFields} [query] - This is the query string fields from the api.
+   * @param {PrismaValidStringFilter[]} validStringFilter - This is an array of
+   * PrismaValidStringFilter. This is used to validate the string filter.
+   */
   constructor(modelEntity: PrismaModelDelegate, entity: TModelEntity, query?: IQueryFields, validStringFilter: PrismaValidStringFilter[] = defaultPrismaStringFilter) {
     this.modelEntity = modelEntity;
     this.query = query ?? defaultQueryFields;
     this.entity = entity;
     this.validStringFilter = validStringFilter;
-    console.log("\n \nCONSTRUCTOR", { querySelect: query.select, defaultQueryFieldsSelect: defaultQueryFields.select, builder: this.builder })
   }
 
+  /**
+   * It takes a query string, parses it into an object, and then recursively filters out any invalid
+   * keys
+   * @returns The builder object with the filter property set to the validFilterObj.
+   */
   filter() {
     const filterObj: object = parseObject(qs.parse(this?.query?.filter ?? '', { comma: true }));
-
     const validFilterObj = this.filterRecursive(filterObj);
-    console.log("\n \n FILTER", { filterObj, queryFilter: this?.query?.filter, validFilterObj })
-
     this.builder.filter = validFilterObj;
     return this;
   }
 
+  /**
+   * It takes the sort query parameter, splits it into an array, and then filters it to only include
+   * the sortable columns
+   * @returns The builder object
+   */
   sort() {
     const sort = _.intersectionWith(
       (this?.query?.sort ?? defaultQueryFields.sort).split(','),
@@ -57,21 +74,14 @@ class ApiQueryBuilder<TModelEntity extends IModelEntity = IModelEntity, WhereInp
       const key = s?.startsWith('-') ? s?.slice(1, s?.length) : s;
       return { [key]: s?.startsWith('-') ? 'desc' : 'asc' };
     });
-
-    console.log("\n \nSORT", {
-      sort,
-      'defaultQueryFields.sort': defaultQueryFields.sort,
-      'this?.query?.sort': this?.query?.sort,
-      'this.entity.sortableColumns': this.entity.sortableColumns,
-      'this.builder.sort': this.builder.sort,
-    })
     return this;
   }
 
   /**
-   * It takes a string of comma separated values, and converts it to an object with the values as keys
-   * and true as the value
-   * @returns The builder object.
+   * It takes the `select` query parameter, parses it into an array, and then converts that array into
+   * an object with the keys being the column names and the values being `true` or `false` depending on
+   * whether the column was selected or not
+   * @returns The builder object
    */
   select() {
     const selectObj = qs.parse(`query=${this?.query?.select || 'true'}`, {
@@ -83,100 +93,58 @@ class ApiQueryBuilder<TModelEntity extends IModelEntity = IModelEntity, WhereInp
       this.toArray(selectObj?.query),
     );
 
-    console.log("\n \nSELECT", {
-      builderSelect: this.builder.select,
-      selectableColumns: this.entity.selectableColumns,
-      selectObjQuery: this.toArray(selectObj?.query),
-    })
-
     return this;
   }
 
   /**
-   * It takes a query string like this:
-   * ?include=user.name,user.email,user.address.city,user.address.state
-   * and turns it into this:
-   * {
-   *   user: {
-   *     select: {
-   *       name: true,
-   *       email: true,
-   *       address: {
-   *         select: {
-   *           city: true,
-   *           state: true
-   *         }
-   *       }
-   *     }
-   *   }
-   * }</code>
-   *
-   *
-   *
-   * I'm trying to write a test for this function, but I'm having trouble figuring out how to mock the
-   * <code>this.builder</code> object.
-   * Here's what I have so far:
-   *
-   *
-   * <code>import { QueryBuilder } from '@mikro-orm/knex';
-   * import { populate } from '../../src/utils/
-   * @returns The builder object with the select property populated.
+   * If the user has passed in a query parameter called `include` then we will add the `select`
+   * property to the knex query builder
+   * @returns The builder object with the select property set to the selectables object.
    */
   populate() {
     const includeObj = qs.parse(this?.query?.include ?? '', { comma: true }) as any;
 
     if (isObjectEmpty(includeObj)) return this;
 
+    /* Checking if the user has passed in a query parameter called `include` then we will add the
+     * `select`
+    ** property to the knex query builder */
     this.entity.allowedRelationShips?.forEach((col) => {
       const selectables = this.entity.selectableRelationShips[col];
       const includeQueryParam = this.toArray(includeObj[col] ?? []);
-      const filteredIncludeObj = this.arrayToBoolObject(
-        selectables,
-        includeQueryParam,
-      );
-      // const hasKey = this.builder?.select?.hasOwnProperty(col);
-      if (!this.builder.select)
-        this.builder.select = {};
-        
-      const select = includeQueryParam[0] == 'true'
-        ? this.arrayToBoolObject(selectables, selectables)
-        : filteredIncludeObj ?? undefined
-      this.builder.select[col] = { select, }
+      /* Filtering the include query parameter to only include the selectable columns. */
+      const filteredIncludeObj = this.arrayToBoolObject(selectables, includeQueryParam);
 
-      console.log("\n \nPOPULATE LOOP", {
-        selectables,
-        includeQueryParam,
-        filteredIncludeObj,
-        ['builderSelect' + col]: this.builder.select[col],
-      })
+      if (!this.builder.select) this.builder.select = {};
+
+      // if true select only the selectables else select the valid relational columns
+      const select = includeQueryParam[0] == 'true' ?
+        this.arrayToBoolObject(selectables, selectables)
+        : isObjectEmpty(filteredIncludeObj) ? undefined : filteredIncludeObj
+
+      this.builder.select[col] = { select }
     });
-    console.log("\n \nPOPULATE", {
-      includeObj,
-    })
+
     return this;
   }
 
   /**
-   * If the query object has a page property, then multiply it by 1, otherwise set it to 1. If the
-   * query object has a limit property, then multiply it by 1, otherwise set it to 50. Then, set the
-   * skip property to the page minus 1 multiplied by the limit. Finally, set the paginate property of
-   * the builder object to an object with the skip and take properties.
-   * @returns The builder object.
+   * It takes the page and limit from the query string, and then uses them to calculate the skip and
+   * take values for the pagination
+   * @returns The builder object with the paginate property set to an object with skip and take
+   * properties.
    */
   paginate() {
     const page = (this.query?.page ?? defaultOptions.currentPage) * 1 || 1;
     const limit = (this.query?.limit ?? defaultOptions.perPage) * 1 || 50;
     const skip = (page - 1) * limit;
     this.builder.paginate = { skip, take: limit };
-
-    console.log("\n \n PAGINATE", { page, limit, skip, 'this.builder.paginate': this.builder.paginate })
-
     return this;
   }
 
   /**
-   * It takes the filter, paginate, select, and sort properties of the builder object and assigns them
-   * to the builderObj object
+   * It takes the filter, paginate, select, and sort properties from the builder object and assigns
+   * them to the builderObj property
    * @returns The builder object
    */
   build() {
@@ -188,13 +156,12 @@ class ApiQueryBuilder<TModelEntity extends IModelEntity = IModelEntity, WhereInp
       ...paginate,
     };
 
-    console.log("\n \nBuilder Object", { ...this.builderObj })
     return this;
   }
 
   /**
-   * This function sorts, filters, selects, populates, and paginates the data, and then returns the
-   * data.
+   * This function sorts, filters, selects, populates, and paginates the query, and then returns the
+   * query.
    * @returns The query object.
    */
   all() {
@@ -206,16 +173,12 @@ class ApiQueryBuilder<TModelEntity extends IModelEntity = IModelEntity, WhereInp
     return this;
   }
 
+
   /**
-   * "This function returns an object with two properties: data and paginated. The data property is an
-   * array of objects and the paginated property is an object with three properties: currentPage,
-   * perPage, and totalPages."
-   * </code>
-   * @returns The return type is an object with two properties: data and paginated.
+   * It returns a paginated object with the data and the paginated object
+   * @returns An object with two properties: data and paginated.
    */
   async many() {
-    // DONE: replace "model as any" with "model"
-
     const data: Partial<TModelEntity>[] = await (this.modelEntity as any).findMany(
       this.builderObj,
     );
@@ -231,20 +194,28 @@ class ApiQueryBuilder<TModelEntity extends IModelEntity = IModelEntity, WhereInp
       totalRecords,
     };
 
-    if (
-      paginated.currentPage > 1 &&
-      paginated.currentPage > paginated.totalPages
-    )
-      return 'NotFoundException';
+    if (paginated.currentPage > 1 && paginated.currentPage > paginated.totalPages) return 'NotFoundException';
 
-    // console.log(this.builderObj)
     return { data, paginated };
   }
 
+  /**
+   * It takes a filter object as a parameter, checks if the filter object has a where property, if it
+   * doesn't, it returns an error message, if it does, it queries the database using the filter object,
+   * counts the total number of records that match the filter, calculates the total number of pages,
+   * and returns the data and paginated object
+   * @param {WhereInput} filter - WhereInput - This is the filter object that is passed to the findMany
+   * method.
+   * @returns - An object with two properties:
+   *     - data: An array of objects that match the filter criteria
+   *     - paginated: An object with the following properties:
+   *       - currentPage: The current page number
+   *       - perPage: The number of records per page
+   *       - totalPages: The total number of pages
+   *       - totalRecords: The total number
+   */
   async findMany(filter: WhereInput) {
-    // DONE: replace "model as any" with "model"
-    if (!(filter as any)?.where)
-      return 'Invalid Filter Parameter';
+    if (!(filter as any)?.where) return 'Invalid Filter Parameter';
 
 
     const data: Partial<TModelEntity>[] = await (this.modelEntity as any).findMany(
@@ -262,33 +233,24 @@ class ApiQueryBuilder<TModelEntity extends IModelEntity = IModelEntity, WhereInp
       totalRecords,
     };
 
-    if (
-      paginated.currentPage > 1 &&
-      paginated.currentPage > paginated.totalPages
-    )
-      return 'NotFoundException';
+    if (paginated.currentPage > 1 && paginated.currentPage > paginated.totalPages) return 'NotFoundException';
 
-    // console.log(this.builderObj)
     return { data, paginated };
   }
 
   /**
-   * The function takes a filter object and returns a promise that resolves to an object.
-   * @param filter - Prisma.SelectSubset<any, any>
-   * @returns The return type is "object"
+   * It takes a filter object as a parameter, checks if the filter object has a where property, if it
+   * doesn't, it returns an error message, if it does, it creates a new object with the where property
+   * of the filter object and the where property of the builder object, and then it returns the result
+   * of the findFirst method of the modelEntity object
+   * @param {WhereInput} filter - WhereInput
+   * @returns The first record that matches the filter.
    */
   async one(filter: WhereInput) {
-    if (!(filter as any)?.where)
-      return 'Invalid Filter Parameter';
+    if (!(filter as any)?.where) return 'Invalid Filter Parameter';
 
-    // DONE: replace "model as any" with "model"
     const { where, skip, take, ...obj } = this.builderObj;
-    // console.log({
-    //   where: { ...filter?.where as object, ...where },
-    //   ...obj,
-    // })
 
-    console.log({ filter });
     return (this.modelEntity as any).findFirst({
       where: { ...((filter as any)?.where as object), ...where },
       ...obj,
@@ -297,9 +259,10 @@ class ApiQueryBuilder<TModelEntity extends IModelEntity = IModelEntity, WhereInp
 
   /**
    * If the value is undefined or null, return an empty array. If the value is an array, return the
-   * array with all undefined values removed. Otherwise, return an array with the value as the only
-   * element.
-   * @param val - The value to be converted to an array.
+   * array with any undefined values removed. If the value is not an array, return an array with the
+   * value as the only element
+   * @param {any | any[]} val - any | any[]
+   * @returns An array of values.
    */
   private toArray(val: any | any[]) {
     if (val == undefined || val == null) return [];
@@ -310,42 +273,29 @@ class ApiQueryBuilder<TModelEntity extends IModelEntity = IModelEntity, WhereInp
   }
 
   /**
-   * It takes an array of strings and returns an object with the strings as keys and the values as
-   * true.
-   * @param {string[]} selectables - string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-   * 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
-   * @param {string[]} array - ["true", "false", "false", "false", "false", "false", "false", "false",
-   * "false", "false", "false", "false", "false", "false", "false", "false", "false", "false", "false",
-   * "false",
-   * @returns An object with the keys of the array and the values of true.
+   * It takes an array of strings and returns an object with the same strings as keys and boolean
+   * values
+   * @param {string[]} selectables - string[] - an array of strings that are the selectable options
+   * @param {string[]} array - string[] - the array of strings to convert to a boolean object
+   * @returns An object with the keys of the selectables array and the values of the array.
    */
   private arrayToBoolObject(selectables: string[], array: string[]): IAnyObject<boolean> {
     if (array[0] == 'true')
       return this.arrayToBoolObject(selectables, selectables);
 
     array = _.intersectionWith(array, selectables);
-    // array = array.filter(col => selectables.includes(col))
 
     const obj: IAnyObject<boolean> = {};
-    array?.forEach((element) => {
-      obj[element] = true;
-    });
+    array?.forEach((element) => { obj[element] = true });
 
-    // console.log("\n \nobj: ", obj)
     return isObjectEmpty(obj) ? {} : obj;
   }
 
+
   /**
-   * It takes a filter object, picks only the keys that are filterable, and then checks if the value is
-   * a string or an array. If it's not, it picks only the valid string filters, and then checks if the
-   * object is empty. If it's not, it returns the trimmed filter value. If it is, it returns undefined.
-   *
-   *
-   * If the value is a string or an array, it checks if the value is an "in" or "notIn" filter, and if
-   * it is, it splits the string and returns an array.
-   *
-   * I'm not sure if this is the best way to do this, but it works.
-   * @param {object} filterObj - object = {
+   * It takes a filter object, picks only the valid keys, and then recursively filters the object until
+   * it's empty
+   * @param {object} filterObj - object - The object that you want to filter.
    */
   private filterRecursive(filterObj: object) {
     const validFilterObj: IAnyObject = _.pick(filterObj, [
@@ -355,7 +305,6 @@ class ApiQueryBuilder<TModelEntity extends IModelEntity = IModelEntity, WhereInp
       'OR',
       ...this.entity.filterableReltionship,
     ]);
-    // console.log('1', { validFilterObj })
 
     for (const key in validFilterObj) {
       const filterValue: string | object = validFilterObj[key];
@@ -383,11 +332,8 @@ class ApiQueryBuilder<TModelEntity extends IModelEntity = IModelEntity, WhereInp
       }
     }
 
-    // console.log('2', { validFilterObj })
-
     return validFilterObj;
   }
 }
-
 
 export default ApiQueryBuilder;
